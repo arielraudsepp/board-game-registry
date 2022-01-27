@@ -1,10 +1,9 @@
-# My Personal Project
+# Board Game Registry
 
-## A subtitle
+## User Stories 
 
-A *bulleted* list:
-- item 1
-- item 2
-- item 3
-
-An example of text with **bold** and *italic* fonts.  
+As a user, I want to:
+- add a board game to my collection
+- view all board games in collection
+- remove a board game from the collection
+- search board games according to number of players, length and type
