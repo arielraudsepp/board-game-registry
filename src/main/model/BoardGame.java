@@ -3,10 +3,10 @@ package model;
 import java.util.ArrayList;
 
 public class BoardGame {
-    private String name;
-    private int[] players;
-    private int[] length;
-    private ArrayList categories;
+    private final String name;
+    private final int[] players;
+    private final int[] length;
+    private final ArrayList categories;
 
     // REQUIRES: name is non-zero length, minPlayers <= maxPlayers, minLength <= maxlength
     // EFFECTS: creates board game with name, min and max players, min and max length, and no categories
