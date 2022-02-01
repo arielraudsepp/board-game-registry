@@ -1,6 +1,6 @@
 package model;
 
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -49,6 +49,7 @@ public class CollectionTest {
         assertTrue(this.testCollection.getBoardGamesWithNumPlayers(4).contains(this.game));
         this.game = this.testCollection.getBoardGameByName("Cutthroat Caverns");
         assertFalse(this.testCollection.getBoardGamesWithNumPlayers(2).contains(this.game));
+        assertFalse(this.testCollection.getBoardGamesWithNumPlayers(10).contains(this.game));
     }
 
     @Test
@@ -57,6 +58,7 @@ public class CollectionTest {
         assertTrue(this.testCollection.getBoardGamesWithLength(90).contains(this.game));
         this.game = this.testCollection.getBoardGameByName("Cutthroat Caverns");
         assertFalse(this.testCollection.getBoardGamesWithLength(30).contains(this.game));
+        assertFalse(this.testCollection.getBoardGamesWithLength(240).contains(this.game));
     }
 }
 

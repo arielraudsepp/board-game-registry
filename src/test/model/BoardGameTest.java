@@ -33,5 +33,7 @@ public class BoardGameTest {
         this.testBoardGame.addCategory("negotiation");
         Assertions.assertTrue(this.testBoardGame.getCategories().contains("negotiation"));
         Assertions.assertEquals(2, this.testBoardGame.getCategories().size());
+        this.testBoardGame.addCategory("bluffing");
+        Assertions.assertEquals(2, this.testBoardGame.getCategories().size());
     }
 }

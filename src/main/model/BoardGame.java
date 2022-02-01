@@ -6,7 +6,7 @@ public class BoardGame {
     private final String name;
     private final int[] players;
     private final int[] length;
-    private final ArrayList categories;
+    private final ArrayList<String> categories;
 
     // REQUIRES: name is non-zero length, minPlayers <= maxPlayers, minLength <= maxlength
     // EFFECTS: creates board game with name, min and max players, min and max length, and no categories
@@ -22,14 +22,13 @@ public class BoardGame {
     // MODIFIES: this
     // EFFECTS: add category tag to list for board game
 
-    public ArrayList addCategory(String category) {
+    public void addCategory(String category) {
         if (!categories.contains(category)) {
             categories.add(category);
         }
-        return categories;
     }
 
-    public ArrayList getCategories() {
+    public ArrayList<String> getCategories() {
         return categories;
     }
 
