@@ -10,10 +10,14 @@ public class CollectionApp {
     private Collection collection;
     private Scanner input;
 
+    // EFFECTS: starts the Collection App
     public CollectionApp() {
         runCollection();
     }
 
+    // REQUIRES: command must be a integer >= 1
+    // MODIFIES: this
+    // EFFECTS: handles user command for main menu
     private void runCollection() {
         boolean continueRun = true;
         int command;
@@ -21,7 +25,7 @@ public class CollectionApp {
         init();
 
         while (continueRun) {
-            displayOptions();
+            displayMainOptions();
             command = input.nextInt();
             if  (command == 6) {
                 continueRun = false;
@@ -33,7 +37,7 @@ public class CollectionApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: handles user command
+    // EFFECTS: handles user command for main menu
     private void handleCommand(int command) {
         if (command == 1) {
             viewGames();
@@ -60,8 +64,8 @@ public class CollectionApp {
         System.out.println("\nWelcome to your Board Game Registry!");
     }
 
-    // EFFECTS: displays options to user
-    private void displayOptions() {
+    // EFFECTS: displays main menu options to user
+    private void displayMainOptions() {
         System.out.println("\nPlease select from the following options");
         System.out.println("1 -> view games in collection");
         System.out.println("2 -> add game to collection");
@@ -71,16 +75,20 @@ public class CollectionApp {
         System.out.println("6 -> quit");
     }
 
+    // EFFECTS: displays board games in collection to user, or message if collection is empty
     private void viewGames() {
-        if (collection.getBoardGames().isEmpty()) {
-            System.out.println("\nYou have no games in your collection!");
-        } else {
-            printGameNames();
+        if (!isEmptyCollection()) {
+            printGameNames();;
         }
     }
 
+    // REQUIRES: non-empty, unique string for name, min players >= 1,
+    // min players <= max players, min length >= 1, min length <= max length
+    // MODIFIES: this
+    // EFFECTS: creates a new board game with name, min and max number of players,
+    // min and max length (in minutes) and provides confirmation
     private void addGame() {
-        System.out.println("Name:");
+        System.out.println("\nName:");
         String name = input.next();
         System.out.println("Minimum # of Players:");
         int minPlayers = input.nextInt();
@@ -96,6 +104,10 @@ public class CollectionApp {
         printGameDetails(game);
     }
 
+    // REQUIRES: game already exists in collection,
+    // inputted command is an integer >= 1
+    // MODIFIES: this
+    // EFFECTS: removes the specified game from the collection
     private void removeGame() {
         viewGames();
         if (!collection.getBoardGames().isEmpty()) {
@@ -109,40 +121,78 @@ public class CollectionApp {
         }
     }
 
+    // REQUIRES: game already exists in collection,
+    // inputted command is an integer >= 1
+    // MODIFIES: this
+    // EFFECTS: adds a category tag to the specified game
     private void addCategory() {
-        printGameNames();
-        System.out.println("\nWhich game would you like to add a tag for?");
-        int gameNumber = input.nextInt();
-        int gameIndex = gameNumber - 1;
-        BoardGame game = collection.getBoardGames().get(gameIndex);
-        printGameDetails(game);
-        System.out.println("\nPlease enter the tag you want to add: ");
-        String category = input.next();
-        game.addCategory(category);
-        printGameDetails(game);
+        if (!isEmptyCollection()) {
+            viewGames();
+            System.out.println("\nWhich game would you like to add a tag for?");
+            int gameNumber = input.nextInt();
+            int gameIndex = gameNumber - 1;
+            BoardGame game = collection.getBoardGames().get(gameIndex);
+            printGameDetails(game);
+            System.out.println("\nPlease enter the tag you want to add: ");
+            String category = input.next();
+            game.addCategory(category);
+            printGameDetails(game);
+        }
     }
 
+    // REQUIRES: inputted command is an integer >= 1
+    // EFFECTS: handles user command for search menu
+    private void searchGames() {
+        if (!isEmptyCollection()) {
+            searchGamesOptions();
+            int searchCommand = input.nextInt();
+            if (searchCommand == 1) {
+                searchByPlayers();
+            } else if (searchCommand == 2) {
+                searchByLength();
+            } else if (searchCommand == 3) {
+                searchByCategory();
+            } else {
+                System.out.println("Not valid command: " + searchCommand);
+            }
+        }
+    }
+
+    // EFFECTS: displays the search  menu options to user
     private void searchGamesOptions() {
-        System.out.println("\nPlease select from the following search options");
+        System.out.println("\nPlease select from the following search options: ");
         System.out.println("1 -> search by number of players");
         System.out.println("2 -> search by game length");
         System.out.println("3 -> search by category");
     }
 
-    private void searchGames() {
-        searchGamesOptions();
-        int searchCommand = input.nextInt();
-        if (searchCommand == 1) {
-            searchByPlayers();
-        } else if (searchCommand == 2) {
-            searchByLength();
-        } else if (searchCommand == 3) {
-            searchByCategory();
-        } else {
-            System.out.println("Not valid command: " + searchCommand);
-        }
+    // REQUIRES: number of players is integer >= 1
+    // EFFECTS: displays all games matching user entered number of players
+    private void searchByPlayers() {
+        System.out.println("\nPlease enter the number of players: ");
+        int numPlayers = input.nextInt();
+        ArrayList<BoardGame> games = collection.getBoardGamesWithNumPlayers(numPlayers);
+        printGameList(games);
     }
 
+    // REQUIRES: length is integer >= 1
+    // EFFECTS: displays all games matching user entered length of game
+    private void searchByLength() {
+        System.out.println("\nPlease enter a length (minutes): ");
+        int length = input.nextInt();
+        ArrayList<BoardGame> games = collection.getBoardGamesWithLength(length);
+        printGameList(games);
+    }
+
+    // EFFECTS: displays all games matching user entered category tag
+    private void searchByCategory() {
+        System.out.println("\nPlease enter a category tag: ");
+        String category = input.next();
+        ArrayList<BoardGame> games = collection.getBoardGamesWithCategory(category);
+        printGameList(games);
+    }
+
+    // EFFECTS: displays a numbered list of all game titles in the collection
     private void printGameNames() {
         System.out.println("\nThese are the games currently in your collection: ");
         int index = 1;
@@ -152,6 +202,19 @@ public class CollectionApp {
         }
     }
 
+    // EFFECTS: display list of game details, or message if list is empty
+    private void printGameList(ArrayList<BoardGame> games) {
+        if (games.isEmpty()) {
+            System.out.println("\nNo games in your collection match search criteria");
+        } else {
+            System.out.println("\nThe following games match your search criteria: ");
+            for (BoardGame game : games) {
+                printGameDetails(game);
+            }
+        }
+    }
+
+    // EFFECTS: displays detailed information about a specified game
     private void printGameDetails(BoardGame game) {
         System.out.println("\nName: " + game.getName());
         System.out.println("Number of Players: " + game.getPlayers()[0] + "-" + game.getPlayers()[1]);
@@ -159,30 +222,14 @@ public class CollectionApp {
         System.out.println("Category Tags: " + game.getCategories());
     }
 
-    private void searchByPlayers() {
-        System.out.println("How many players?");
-        int numPlayers = input.nextInt();
-        ArrayList<BoardGame> games = collection.getBoardGamesWithNumPlayers(numPlayers);
-        for (BoardGame game : games) {
-            printGameDetails(game);
+    // EFFECTS: checks if collection is empty, if it is
+    // prints message and exits method
+    private boolean isEmptyCollection() {
+        boolean emptyCollection = false;
+        if (collection.getBoardGames().isEmpty()) {
+            System.out.println("\nYou have no games in your collection!");
+            emptyCollection = true;
         }
-    }
-
-    private void searchByLength() {
-        System.out.println("How long?");
-        int length = input.nextInt();
-        ArrayList<BoardGame> games = collection.getBoardGamesWithLength(length);
-        for (BoardGame game : games) {
-            printGameDetails(game);
-        }
-    }
-
-    private void searchByCategory() {
-        System.out.println("Which category would you like to search for?");
-        String category = input.next();
-        ArrayList<BoardGame> games = collection.getBoardGamesWithCategory(category);
-        for (BoardGame game : games) {
-            printGameDetails(game);
-        }
+        return emptyCollection;
     }
 }
