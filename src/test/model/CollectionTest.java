@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CollectionTest {
     private Collection testCollection;
-    private BoardGame game;
 
     public CollectionTest() {
     }
@@ -29,36 +28,36 @@ public class CollectionTest {
 
     @Test
     void testRemoveBoardGame() {
-        this.game = this.testCollection.getBoardGameByName("Cutthroat Caverns");
-        this.testCollection.removeBoardGame(this.game);
-        assertFalse(this.testCollection.getBoardGames().contains(this.game));
+        BoardGame caverns = this.testCollection.getBoardGameByName("Cutthroat Caverns");
+        this.testCollection.removeBoardGame(caverns);
+        assertFalse(this.testCollection.getBoardGames().contains(caverns));
     }
 
     @Test
     void testGetBoardGamesWithCategory() {
-        this.game = this.testCollection.getBoardGameByName("Cosmic Encounter");
-        this.game.addCategory("bluffing");
-        assertTrue(this.testCollection.getBoardGamesWithCategory("bluffing").contains(this.game));
-        this.game = this.testCollection.getBoardGameByName("Cutthroat Caverns");
-        assertFalse(this.testCollection.getBoardGamesWithCategory("bluffing").contains(this.game));
+        BoardGame cosmic = this.testCollection.getBoardGameByName("Cosmic Encounter");
+        cosmic.addCategory("bluffing");
+        assertTrue(this.testCollection.getBoardGamesWithCategory("bluffing").contains(cosmic));
+        BoardGame caverns = this.testCollection.getBoardGameByName("Cutthroat Caverns");
+        assertFalse(this.testCollection.getBoardGamesWithCategory("bluffing").contains(caverns));
     }
 
     @Test
     void testGetBoardGamesWithNumPlayers() {
-        this.game = this.testCollection.getBoardGameByName("Cosmic Encounter");
-        assertTrue(this.testCollection.getBoardGamesWithNumPlayers(4).contains(this.game));
-        this.game = this.testCollection.getBoardGameByName("Cutthroat Caverns");
-        assertFalse(this.testCollection.getBoardGamesWithNumPlayers(2).contains(this.game));
-        assertFalse(this.testCollection.getBoardGamesWithNumPlayers(10).contains(this.game));
+        BoardGame cosmic = this.testCollection.getBoardGameByName("Cosmic Encounter");
+        assertTrue(this.testCollection.getBoardGamesWithNumPlayers(4).contains(cosmic));
+        BoardGame caverns = this.testCollection.getBoardGameByName("Cutthroat Caverns");
+        assertFalse(this.testCollection.getBoardGamesWithNumPlayers(2).contains(caverns));
+        assertFalse(this.testCollection.getBoardGamesWithNumPlayers(10).contains(caverns));
     }
 
     @Test
     void testGetBoardGamesWithLength() {
-        this.game = this.testCollection.getBoardGameByName("Cosmic Encounter");
-        assertTrue(this.testCollection.getBoardGamesWithLength(90).contains(this.game));
-        this.game = this.testCollection.getBoardGameByName("Cutthroat Caverns");
-        assertFalse(this.testCollection.getBoardGamesWithLength(30).contains(this.game));
-        assertFalse(this.testCollection.getBoardGamesWithLength(240).contains(this.game));
+        BoardGame cosmic = this.testCollection.getBoardGameByName("Cosmic Encounter");
+        assertTrue(this.testCollection.getBoardGamesWithLength(90).contains(cosmic));
+        BoardGame caverns = this.testCollection.getBoardGameByName("Cutthroat Caverns");
+        assertFalse(this.testCollection.getBoardGamesWithLength(30).contains(caverns));
+        assertFalse(this.testCollection.getBoardGamesWithLength(240).contains(caverns));
     }
 }
 
