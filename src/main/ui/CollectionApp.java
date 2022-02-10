@@ -40,7 +40,7 @@ public class CollectionApp {
     // EFFECTS: handles user command for main menu
     private void handleCommand(int command) {
         if (command == 1) {
-            viewGames();
+            viewAllGames();
         } else if (command == 2) {
             addGame();
         } else if (command == 3) {
@@ -75,10 +75,17 @@ public class CollectionApp {
         System.out.println("6 -> quit");
     }
 
-    // EFFECTS: displays board games in collection to user, or message if collection is empty
-    private void viewGames() {
+    // EFFECTS: displays numbered list of games in collection to user, or message if collection is empty
+    private void viewAllGames() {
         if (!isEmptyCollection()) {
-            printGameNames();;
+            printDetailedGamesList();
+        }
+    }
+
+    // EFFECTS: displays numbered list of games in collection to user, or message if collection is empty
+    private void viewNumberedGames() {
+        if (!isEmptyCollection()) {
+            printNumberedGameNames();
         }
     }
 
@@ -109,7 +116,7 @@ public class CollectionApp {
     // MODIFIES: this
     // EFFECTS: removes the specified game from the collection
     private void removeGame() {
-        viewGames();
+        viewNumberedGames();
         if (!collection.getBoardGames().isEmpty()) {
             System.out.println("\nWhich game would you like to remove?");
             int gameNumber = input.nextInt();
@@ -127,7 +134,7 @@ public class CollectionApp {
     // EFFECTS: adds a category tag to the specified game
     private void addCategory() {
         if (!isEmptyCollection()) {
-            viewGames();
+            viewNumberedGames();
             System.out.println("\nWhich game would you like to add a tag for?");
             int gameNumber = input.nextInt();
             int gameIndex = gameNumber - 1;
@@ -136,6 +143,7 @@ public class CollectionApp {
             System.out.println("\nPlease enter the tag you want to add: ");
             String category = input.next();
             game.addCategory(category);
+            System.out.println("\nThe category tags for the following game been updated: ");
             printGameDetails(game);
         }
     }
@@ -172,7 +180,7 @@ public class CollectionApp {
         System.out.println("\nPlease enter the number of players: ");
         int numPlayers = input.nextInt();
         ArrayList<BoardGame> games = collection.getBoardGamesWithNumPlayers(numPlayers);
-        printGameList(games);
+        printFilteredGamesList(games);
     }
 
     // REQUIRES: length is integer >= 1
@@ -181,7 +189,7 @@ public class CollectionApp {
         System.out.println("\nPlease enter a length (minutes): ");
         int length = input.nextInt();
         ArrayList<BoardGame> games = collection.getBoardGamesWithLength(length);
-        printGameList(games);
+        printFilteredGamesList(games);
     }
 
     // EFFECTS: displays all games matching user entered category tag
@@ -189,11 +197,11 @@ public class CollectionApp {
         System.out.println("\nPlease enter a category tag: ");
         String category = input.next();
         ArrayList<BoardGame> games = collection.getBoardGamesWithCategory(category);
-        printGameList(games);
+        printFilteredGamesList(games);
     }
 
     // EFFECTS: displays a numbered list of all game titles in the collection
-    private void printGameNames() {
+    private void printNumberedGameNames() {
         System.out.println("\nThese are the games currently in your collection: ");
         int index = 1;
         for (BoardGame game: collection.getBoardGames()) {
@@ -202,8 +210,16 @@ public class CollectionApp {
         }
     }
 
+    // EFFECTS: display list of game details for entire collection
+    private void printDetailedGamesList() {
+        System.out.println("\nThese are the games currently in your collection: ");
+        for (BoardGame game : collection.getBoardGames()) {
+            printGameDetails(game);
+        }
+    }
+
     // EFFECTS: display list of game details, or message if list is empty
-    private void printGameList(ArrayList<BoardGame> games) {
+    private void printFilteredGamesList(ArrayList<BoardGame> games) {
         if (games.isEmpty()) {
             System.out.println("\nNo games in your collection match search criteria");
         } else {
