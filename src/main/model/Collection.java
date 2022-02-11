@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
+// Represents a collection of board games
 public class Collection {
 
     // EFFECTS: creates a new, empty collection of board games
@@ -57,6 +58,7 @@ public class Collection {
         return gamesWithLength;
     }
 
+    // EFFECTS: gets all board games in the collection
     public ArrayList<BoardGame> getBoardGames() {
         return this.boardGames;
     }
