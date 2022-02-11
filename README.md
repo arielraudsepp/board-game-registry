@@ -6,7 +6,8 @@ The Board Game Registry helps to organize board games you own. You can add a boa
 ## User Stories 
 
 As a user, I want to:
-- add a board game to my collection
-- view all board games in collection
-- remove a board game from the collection
+- add board games to my collection
+- remove board games from my collection
+- add category tags to a board game
 - search board games according to number of players, length or category
+- view all board games in my collection 

@@ -3,16 +3,23 @@ package model;
 import java.util.ArrayList;
 
 public class Collection {
-    private final ArrayList<BoardGame> boardGames = new ArrayList<>();
 
+    // EFFECTS: creates a new, empty collection of board games
+    private ArrayList<BoardGame> boardGames = new ArrayList<>();
+
+    // MODIFIES: this
+    // EFFECTS: adds a board game to the collection
     public void addBoardGame(BoardGame game) {
         this.boardGames.add(game);
     }
 
+    // MODIFIES: this
+    // EFFECTS: removes a board game to the collection
     public void removeBoardGame(BoardGame game) {
         this.boardGames.remove(game);
     }
 
+    // EFFECTS: produces list of board games with given category tag
     public ArrayList<BoardGame> getBoardGamesWithCategory(String category) {
         ArrayList<BoardGame> gamesWithCategory = new ArrayList<>();
 
@@ -24,6 +31,8 @@ public class Collection {
         return gamesWithCategory;
     }
 
+    // REQUIRES: number is integer is >= 1
+    // EFFECTS: produces list of board games with given number of players
     public ArrayList<BoardGame> getBoardGamesWithNumPlayers(int number) {
         ArrayList<BoardGame> gamesWithNumPlayers = new ArrayList<>();
 
@@ -35,6 +44,8 @@ public class Collection {
         return gamesWithNumPlayers;
     }
 
+    // REQUIRES: number is integer >= 1
+    // EFFECTS: produces list of board games with given length (minutes)
     public ArrayList<BoardGame> getBoardGamesWithLength(int number) {
         ArrayList<BoardGame> gamesWithLength = new ArrayList<>();
 
@@ -50,6 +61,8 @@ public class Collection {
         return this.boardGames;
     }
 
+    // REQUIRES: name is a non-empty string
+    // EFFECTS: gets board game by name
     public BoardGame getBoardGameByName(String name) {
         BoardGame game = null;
         for (BoardGame b : boardGames) {

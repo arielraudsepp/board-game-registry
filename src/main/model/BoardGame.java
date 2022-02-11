@@ -10,7 +10,6 @@ public class BoardGame {
 
     // REQUIRES: name is non-zero length, minPlayers <= maxPlayers, minLength <= maxlength
     // EFFECTS: creates board game with name, min and max players, min and max length, and no categories
-
     public BoardGame(String name, int minPlayers, int maxPlayers, int minLength, int maxLength) {
         this.name = name;
         this.players = new int[]{minPlayers, maxPlayers};
@@ -21,7 +20,6 @@ public class BoardGame {
     // REQUIRES: category is not empty string
     // MODIFIES: this
     // EFFECTS: add category tag to list for board game
-
     public void addCategory(String category) {
         if (!categories.contains(category)) {
             categories.add(category);
