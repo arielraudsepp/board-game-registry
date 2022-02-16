@@ -1,10 +1,13 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
 // Represents a board game with name, minimum and maximum number of players, minimum and maximum
 // length (in minutes) and a list of category tags for the game
-public class BoardGame {
+public class BoardGame implements Writable {
     private final String name;
     private final int[] players;
     private final int[] length;
@@ -46,5 +49,15 @@ public class BoardGame {
     // EFFECTS: returns the array of length (min, max) for a board game
     public int[] getLength() {
         return length;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("players", players);
+        json.put("length", length);
+        json.put("categories", categories);
+        return json;
     }
 }

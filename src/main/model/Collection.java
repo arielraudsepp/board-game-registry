@@ -1,9 +1,13 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
 // Represents a collection of board games
-public class Collection {
+public class Collection implements Writable {
 
     // EFFECTS: creates a new, empty collection of board games
     private ArrayList<BoardGame> boardGames = new ArrayList<>();
@@ -73,6 +77,23 @@ public class Collection {
             }
         }
         return game;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("games", gamesToJson());
+        return json;
+    }
+
+    // EFFECTS: returns board games in collection as a JSON array
+    private JSONArray gamesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (BoardGame b : boardGames) {
+            jsonArray.put(b.toJson());
+        }
+        return jsonArray;
     }
 }
 

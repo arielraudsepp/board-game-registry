@@ -10,4 +10,6 @@ As a user, I want to:
 - remove board games from my collection
 - add category tags to a board game
 - search board games according to number of players, length or category
-- view all board games in my collection 
+- view all board games in my collection
+- be able to save my collection to a file
+- be able to load my collection from a file 

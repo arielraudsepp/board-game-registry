@@ -3,12 +3,21 @@ package ui;
 import model.BoardGame;
 import model.Collection;
 
+import persistence.JsonWriter;
+import persistence.JsonReader;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 public class CollectionApp {
+    private static final String JSON_FILE = "./data/collection.json";
     private Collection collection;
     private Scanner input;
+    private JsonReader jsonReader;
+    private JsonWriter jsonWriter;
 
     // EFFECTS: starts the Collection App
     public CollectionApp() {
@@ -21,9 +30,11 @@ public class CollectionApp {
     private void runCollection() {
         boolean continueRun = true;
         int command;
-
-        init();
-
+        try {
+            init();
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to locate saved file");
+        }
         while (continueRun) {
             displayMainOptions();
             command = input.nextInt();
@@ -33,6 +44,7 @@ public class CollectionApp {
                 handleCommand(command);
             }
         }
+        saveCollection();
         System.out.println("\nBye!");
     }
 
@@ -57,9 +69,12 @@ public class CollectionApp {
 
     // MODIFIES: this
     // EFFECTS: initializes collection
-    private void init() {
+    private void init()  throws FileNotFoundException {
         collection = new Collection();
         input = new Scanner(System.in);
+        jsonReader = new JsonReader(JSON_FILE);
+        jsonWriter = new JsonWriter(JSON_FILE);
+        loadCollection();
         input.useDelimiter("\n");
         System.out.println("\nWelcome to your Board Game Registry!");
     }
@@ -247,5 +262,30 @@ public class CollectionApp {
             emptyCollection = true;
         }
         return emptyCollection;
+    }
+
+    // Code modified from CPSC210/JsonSerializationDemo
+    // EFFECTS: saves the collection to file
+    private void saveCollection() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(collection);
+            jsonWriter.close();
+            System.out.println("Saved collection");
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_FILE);
+        }
+    }
+
+    // Code modified from CPSC210/JsonSerializationDemo
+    // MODIFIES: this
+    // EFFECTS: loads collection from file
+    private void loadCollection() {
+        try {
+            collection = jsonReader.read();
+            System.out.println("Loaded collection");
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_FILE);
+        }
     }
 }
