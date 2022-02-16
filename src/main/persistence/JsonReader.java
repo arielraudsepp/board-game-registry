@@ -71,7 +71,7 @@ public class JsonReader {
         int maxLength = length.getInt(1);
         JSONArray categories = jsonObject.getJSONArray("categories");
         ArrayList<String> categoryList = new ArrayList<>();
-        if (categories != null) {
+        if (!categories.isEmpty()) {
             int len = categories.length();
             int index = 0;
             while (index < len) {
