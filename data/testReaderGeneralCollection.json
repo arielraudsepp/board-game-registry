@@ -1,0 +1,26 @@
+{"games": [
+    {
+        "players": [
+            3,
+            5
+        ],
+        "name": "Cosmic Encounter",
+        "length": [
+            60,
+            120
+        ],
+        "categories": []
+    },
+    {
+        "players": [
+            3,
+            6
+        ],
+        "name": "Cutthroat Caverns",
+        "length": [
+            90,
+            90
+        ],
+        "categories": []
+    }
+]}
