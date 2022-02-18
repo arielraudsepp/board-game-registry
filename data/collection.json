@@ -1,12 +1,26 @@
-{"games": [{
-    "players": [
-        12,
-        12
-    ],
-    "name": "12",
-    "length": [
-        12,
-        12
-    ],
-    "categories": []
-}]}
+{"games": [
+    {
+        "players": [
+            12,
+            12
+        ],
+        "name": "12",
+        "length": [
+            12,
+            12
+        ],
+        "categories": []
+    },
+    {
+        "players": [
+            32,
+            32
+        ],
+        "name": "32",
+        "length": [
+            32,
+            32
+        ],
+        "categories": []
+    }
+]}

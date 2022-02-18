@@ -38,13 +38,12 @@ public class CollectionApp {
         while (continueRun) {
             displayMainOptions();
             command = input.nextInt();
-            if  (command == 6) {
+            if  (command == 8) {
                 continueRun = false;
             } else {
                 handleCommand(command);
             }
         }
-        saveCollection();
         System.out.println("\nBye!");
     }
 
@@ -61,6 +60,10 @@ public class CollectionApp {
             addCategory();
         } else if (command == 5) {
             searchGames();
+        } else if (command == 6) {
+            loadCollection();
+        } else if (command == 7) {
+            saveCollection();
         } else {
             System.out.println("Not valid command: " + command);
         }
@@ -74,7 +77,7 @@ public class CollectionApp {
         input = new Scanner(System.in);
         jsonReader = new JsonReader(JSON_FILE);
         jsonWriter = new JsonWriter(JSON_FILE);
-        loadCollection();
+
         input.useDelimiter("\n");
         System.out.println("\nWelcome to your Board Game Registry!");
     }
@@ -87,7 +90,9 @@ public class CollectionApp {
         System.out.println("3 -> remove game from collection");
         System.out.println("4 -> add category tags to a game");
         System.out.println("5 -> search for a game");
-        System.out.println("6 -> quit");
+        System.out.println("6 -> load collection from file");
+        System.out.println("7 -> save collection to file");
+        System.out.println("8 -> quit");
     }
 
     // EFFECTS: displays numbered list of games in collection to user, or message if collection is empty
