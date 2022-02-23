@@ -10,7 +10,8 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-// Code modified from CPSC210/JsonSerializationDemo
+// All methods modified from JSONWriterTest class in
+// https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
 public class JsonWriterTest extends JsonTest {
     @Test
     void testWriterInvalidFile() {

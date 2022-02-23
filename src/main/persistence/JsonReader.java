@@ -14,7 +14,8 @@ import java.util.stream.Stream;
 
 import org.json.*;
 
-// Represents a reader that reads workroom from JSON data stored in file
+// All methods modified from JSONReader class in
+// https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
 public class JsonReader {
     private String source;
 
@@ -23,7 +24,7 @@ public class JsonReader {
         this.source = source;
     }
 
-    // EFFECTS: reads workroom from file and returns it;
+    // EFFECTS: reads collection from file and returns it;
     // throws IOException if an error occurs reading data from file
     public Collection read() throws IOException {
         String jsonData = readFile(source);
