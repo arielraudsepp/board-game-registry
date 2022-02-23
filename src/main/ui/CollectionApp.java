@@ -24,32 +24,55 @@ public class CollectionApp {
         runCollection();
     }
 
-    // REQUIRES: command must be a integer >= 1
+    // REQUIRES: command must be an integer >= 1
     // MODIFIES: this
     // EFFECTS: handles user command for main menu
     private void runCollection() {
         boolean continueRun = true;
         int command;
-        try {
-            init();
-        } catch (FileNotFoundException e) {
-            System.out.println("Unable to locate saved file");
-        }
+        init();
+        int loadCommand = input.nextInt();
+        handleSaveLoadCommand(loadCommand, "load");
         while (continueRun) {
             displayMainOptions();
             command = input.nextInt();
             if  (command == 8) {
+                displayQuitMenu();
+                int quitCommand = input.nextInt();
+                handleSaveLoadCommand(quitCommand, "save");
                 continueRun = false;
             } else {
-                handleCommand(command);
+                handleMainMenuCommand(command);
             }
         }
         System.out.println("\nBye!");
     }
 
     // MODIFIES: this
+    // EFFECTS: display quit menu options to user
+    private void displayQuitMenu() {
+        System.out.println("\nWould you like to save your collection to file?");
+        System.out.println("1 -> Yes");
+        System.out.println("2 -> No");
+    }
+
+    // MODIFIES: this
+    // EFFECTS: handles user command for quit menu
+    private void handleSaveLoadCommand(int command, String action) {
+        if (command == 1 && action.equals("save")) {
+            saveCollection();
+        } else if (command == 1 && action.equals("load")) {
+            loadCollection();
+        } else if (command == 2) {
+            return;
+        } else {
+            System.out.println("Not valid command: " + command);
+        }
+    }
+
+    // MODIFIES: this
     // EFFECTS: handles user command for main menu
-    private void handleCommand(int command) {
+    private void handleMainMenuCommand(int command) {
         if (command == 1) {
             viewAllGames();
         } else if (command == 2) {
@@ -72,7 +95,7 @@ public class CollectionApp {
 
     // MODIFIES: this
     // EFFECTS: initializes collection
-    private void init()  throws FileNotFoundException {
+    private void init() {
         collection = new Collection();
         input = new Scanner(System.in);
         jsonReader = new JsonReader(JSON_FILE);
@@ -80,6 +103,9 @@ public class CollectionApp {
 
         input.useDelimiter("\n");
         System.out.println("\nWelcome to your Board Game Registry!");
+        System.out.println("\nWould you like to load your collection from file?");
+        System.out.println("1 -> Yes");
+        System.out.println("2 -> No");
     }
 
     // EFFECTS: displays main menu options to user
