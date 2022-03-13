@@ -79,6 +79,11 @@ public class Collection implements Writable {
         return game;
     }
 
+    // EFFECTS: checks if collection is empty
+    public boolean isEmpty() {
+        return getBoardGames().isEmpty();
+    }
+
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

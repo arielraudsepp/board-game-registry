@@ -30,7 +30,6 @@ public class CollectionApp {
     private void runCollection() {
         boolean continueRun = true;
         int command;
-        init();
         int loadCommand = input.nextInt();
         handleSaveLoadCommand(loadCommand, "load");
         while (continueRun) {
@@ -90,22 +89,6 @@ public class CollectionApp {
         } else {
             System.out.println("Not valid command: " + command);
         }
-    }
-
-
-    // MODIFIES: this
-    // EFFECTS: initializes collection
-    private void init() {
-        collection = new Collection();
-        input = new Scanner(System.in);
-        jsonReader = new JsonReader(JSON_FILE);
-        jsonWriter = new JsonWriter(JSON_FILE);
-
-        input.useDelimiter("\n");
-        System.out.println("\nWelcome to your Board Game Registry!");
-        System.out.println("\nWould you like to load your collection from file?");
-        System.out.println("1 -> Yes");
-        System.out.println("2 -> No");
     }
 
     // EFFECTS: displays main menu options to user
@@ -284,15 +267,9 @@ public class CollectionApp {
         System.out.println("Category Tags: " + game.getCategories());
     }
 
-    // EFFECTS: checks if collection is empty, if it is
-    // prints message and exits method
+    // EFFECTS: checks if collection is empty
     private boolean isEmptyCollection() {
-        boolean emptyCollection = false;
-        if (collection.getBoardGames().isEmpty()) {
-            System.out.println("\nYou have no games in your collection!");
-            emptyCollection = true;
-        }
-        return emptyCollection;
+        return collection.getBoardGames().isEmpty();
     }
 
     // Code modified from CPSC210/JsonSerializationDemo

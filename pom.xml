@@ -49,20 +49,13 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>ui.Main</mainClass>
+                    <mainClass>ui.BGApp</mainClass>
                 </configuration>
             </plugin>
             <plugin>
                  <groupId>org.apache.maven.plugins</groupId>
                  <artifactId>maven-checkstyle-plugin</artifactId>
                  <version>3.1.2</version>
-                 <dependencies>
-                     <dependency>
-                         <groupId>com.puppycrawl.tools</groupId>
-                         <artifactId>checkstyle</artifactId>
-                         <version>8.18</version>
-                     </dependency>
-                 </dependencies>
                  <configuration>
                      <configLocation>checkstyle.xml</configLocation>
                      <encoding>UTF-8</encoding>
