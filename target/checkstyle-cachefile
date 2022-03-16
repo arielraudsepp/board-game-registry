@@ -1,6 +1,10 @@
-#Tue Feb 15 12:09:13 PST 2022
-configuration*?=2198DD9118F9D5CDB351B21D890AB5D0253D8AD7
-/Users/ariel/Dropbox/School/CPSC-210/project_b0f8g/src/main/ui/Main.java=1643659731000
-/Users/ariel/Dropbox/School/CPSC-210/project_b0f8g/src/main/ui/CollectionApp.java=1644533961374
-/Users/ariel/Dropbox/School/CPSC-210/project_b0f8g/src/main/model/BoardGame.java=1644940936372
-/Users/ariel/Dropbox/School/CPSC-210/project_b0f8g/src/main/model/Collection.java=1644546630759
+#Sat Mar 12 21:49:43 PST 2022
+C\:\\Users\\Ariel\\Dropbox\\School\\CPSC-210\\project_b0f8g\\src\\main\\persistence\\JsonWriter.java=1646427186314
+C\:\\Users\\Ariel\\Dropbox\\School\\CPSC-210\\project_b0f8g\\src\\main\\model\\Collection.java=1647144919591
+C\:\\Users\\Ariel\\Dropbox\\School\\CPSC-210\\project_b0f8g\\src\\main\\ui\\CollectionApp.java=1647144805154
+C\:\\Users\\Ariel\\Dropbox\\School\\CPSC-210\\project_b0f8g\\src\\main\\model\\BoardGame.java=1646427186313
+C\:\\Users\\Ariel\\Dropbox\\School\\CPSC-210\\project_b0f8g\\src\\main\\persistence\\JsonReader.java=1646427186314
+C\:\\Users\\Ariel\\Dropbox\\School\\CPSC-210\\project_b0f8g\\src\\main\\persistence\\Writable.java=1646427186315
+C\:\\Users\\Ariel\\Dropbox\\School\\CPSC-210\\project_b0f8g\\src\\main\\ui\\Button.java=1647144396127
+configuration*?=A461F4D9ACFAA0173EC9153E24A90B5283454C63
+C\:\\Users\\Ariel\\Dropbox\\School\\CPSC-210\\project_b0f8g\\src\\main\\ui\\BGApp.java=1647150339124

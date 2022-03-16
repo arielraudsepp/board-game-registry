@@ -9,16 +9,16 @@ import java.util.ArrayList;
 // length (in minutes) and a list of category tags for the game
 public class BoardGame implements Writable {
     private final String name;
-    private final int[] players;
-    private final int[] length;
+    private final Integer[] players;
+    private final Integer[] length;
     private final ArrayList<String> categories;
 
     // REQUIRES: name is non-zero length, minPlayers <= maxPlayers, minLength <= maxlength
     // EFFECTS: creates board game with name, min and max players, min and max length, and no categories
-    public BoardGame(String name, int minPlayers, int maxPlayers, int minLength, int maxLength) {
+    public BoardGame(String name, Integer minPlayers, Integer maxPlayers, Integer minLength, Integer maxLength) {
         this.name = name;
-        this.players = new int[]{minPlayers, maxPlayers};
-        this.length = new int[]{minLength, maxLength};
+        this.players = new Integer[]{minPlayers, maxPlayers};
+        this.length = new Integer[]{minLength, maxLength};
         this.categories = new ArrayList<>();
     }
 
@@ -42,12 +42,12 @@ public class BoardGame implements Writable {
     }
 
     // EFFECTS: returns the array (min, max) of players for a board game
-    public int[] getPlayers() {
+    public Integer[] getPlayers() {
         return players;
     }
 
     // EFFECTS: returns the array of length (min, max) for a board game
-    public int[] getLength() {
+    public Integer[] getLength() {
         return length;
     }
 

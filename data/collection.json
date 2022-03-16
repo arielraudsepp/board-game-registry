@@ -1,25 +1,37 @@
 {"games": [
     {
         "players": [
-            43,
-            43
+            12,
+            12
         ],
-        "name": "43",
+        "name": "12",
         "length": [
-            43,
-            43
+            12,
+            12
+        ],
+        "categories": ["fun"]
+    },
+    {
+        "players": [
+            32,
+            32
+        ],
+        "name": "32",
+        "length": [
+            32,
+            32
         ],
         "categories": []
     },
     {
         "players": [
-            21,
-            21
+            1,
+            1
         ],
-        "name": "21",
+        "name": "1",
         "length": [
-            21,
-            21
+            1,
+            1
         ],
         "categories": []
     }

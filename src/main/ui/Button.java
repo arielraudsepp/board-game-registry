@@ -13,6 +13,7 @@ public class Button implements ActionListener {
     public Button(BGApp app, JComponent parent, String name) {
         this.app = app;
         button = new JButton(name);
+        button.setFont(new Font("Arial", Font.PLAIN, 18));
         addToParent(parent);
         button.setActionCommand("click");
         button.addActionListener(this);

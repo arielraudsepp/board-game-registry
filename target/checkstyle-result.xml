@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle version="8.18">
-<file name="/Users/ariel/Dropbox/School/CPSC-210/project_b0f8g/src/main/persistence/JsonWriter.java">
-<error line="2" severity="error" message="&apos;import&apos; should be separated from previous statement." source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
-<error line="23" severity="error" message="&apos;method def&apos; child has incorrect indentation level 7, expected level should be 8." source="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
+<file name="C:\Users\Ariel\Dropbox\School\CPSC-210\project_b0f8g\src\main\model\BoardGame.java">
+</file>
+<file name="C:\Users\Ariel\Dropbox\School\CPSC-210\project_b0f8g\src\main\model\Collection.java">
+</file>
+<file name="C:\Users\Ariel\Dropbox\School\CPSC-210\project_b0f8g\src\main\persistence\JsonReader.java">
+</file>
+<file name="C:\Users\Ariel\Dropbox\School\CPSC-210\project_b0f8g\src\main\persistence\JsonWriter.java">
+</file>
+<file name="C:\Users\Ariel\Dropbox\School\CPSC-210\project_b0f8g\src\main\persistence\Writable.java">
+</file>
+<file name="C:\Users\Ariel\Dropbox\School\CPSC-210\project_b0f8g\src\main\ui\BGApp.java">
+</file>
+<file name="C:\Users\Ariel\Dropbox\School\CPSC-210\project_b0f8g\src\main\ui\Button.java">
+</file>
+<file name="C:\Users\Ariel\Dropbox\School\CPSC-210\project_b0f8g\src\main\ui\CollectionApp.java">
 </file>
 </checkstyle>
