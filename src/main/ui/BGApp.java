@@ -17,13 +17,12 @@ public class BGApp extends JFrame {
     private JsonReader jsonReader;
     private JsonWriter jsonWriter;
     private ArrayList<Button> buttons;
-    private ArrayList<AddForm> formFields;
     private JSplitPane mainPanel;
     private JSplitPane leftPanel;
-    private JPanel rightPanel;
+    private JSplitPane rightPanel;
     private AddForm formArea;
-    private JPanel addArea;
     private JPanel buttonArea;
+    private GameList listPanel;
     private JTextArea displayArea;
 
     public BGApp() {
@@ -31,16 +30,15 @@ public class BGApp extends JFrame {
         jsonReader = new JsonReader(JSON_FILE);
         jsonWriter = new JsonWriter(JSON_FILE);
         buttons = new ArrayList<>();
-        formFields = new ArrayList<>();
 
         mainPanel = new JSplitPane();
         leftPanel = new JSplitPane();
-        rightPanel = new JPanel();
+        rightPanel = new JSplitPane();
 
         this.setTitle("Board Game Collection App");
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setMinimumSize(new Dimension(600, 600));
+        setMinimumSize(new Dimension(800, 550));
         getContentPane().setLayout(new GridLayout());
         getContentPane().add(mainPanel);
         initPanels();
@@ -48,6 +46,8 @@ public class BGApp extends JFrame {
 
     }
 
+    // MODIFIES: this
+    // EFFECTS: configures main, left and right panels and adds components
     private void initPanels() {
         mainPanel.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 
@@ -60,42 +60,47 @@ public class BGApp extends JFrame {
         leftPanel.setTopComponent(createFormArea());
         leftPanel.setBottomComponent(createButtons());
 
-        rightPanel.add(createTextArea());
+        rightPanel.setOrientation(JSplitPane.VERTICAL_SPLIT);
+        rightPanel.setDividerLocation(300);
+        rightPanel.setTopComponent(createListArea());
+        rightPanel.setBottomComponent(createTextArea());
     }
 
     // MODIFIES: this
-    // EFFECTS:  a helper method which declares and instantiates all text
+    // EFFECTS:  creates a text panel to display game details
     private JPanel createTextArea() {
         JPanel textPanel = new JPanel();
-        displayArea = new JTextArea();
-        displayArea.setFont(new Font("Arial", Font.PLAIN, 18));
+        textPanel.add(new JLabel("Selected Game Details: "));
+        displayArea = new JTextArea(7, 20);
         displayArea.setEditable(false);
         textPanel.add(displayArea);
         return textPanel;
     }
 
     // MODIFIES: this
-    // EFFECTS:  a helper method which declares and instantiates all text
+    // EFFECTS: creates a new games list panel
+    private JPanel createListArea() {
+        listPanel = new GameList(this);
+        return listPanel;
+    }
+
+    // MODIFIES: this
+    // EFFECTS:  creates form panel with add game form and 'add' button
     private JPanel createFormArea() {
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
-        formArea = new AddForm(this, formPanel);
-        formArea.setSize(new Dimension(100, 100));
-        formArea.setFont(new Font("Arial", Font.PLAIN, 18));
+        formArea = new AddForm(formPanel);
 
-        Button addButton = new Button(this, formPanel, "Add");
-        buttons.add(addButton);
+        new Button(this, formPanel, "Add");
         return formPanel;
     }
 
 
     // MODIFIES: this
-    // EFFECTS:  a helper method which declares and instantiates all buttons
+    // EFFECTS:  a helper method which creates panel of 'load' and 'save' buttons
     private JPanel createButtons() {
         buttonArea = new JPanel();
-
         buttonArea.setSize(new Dimension(0, 0));
-
 
         Button loadButton = new Button(this, buttonArea, "Load");
         buttons.add(loadButton);
@@ -110,15 +115,14 @@ public class BGApp extends JFrame {
     // MODIFIES: this
     // EFFECTS: loads collection from file
     public void loadCollection() {
-        String message = "";
         try {
             collection = jsonReader.read();
-            message = "Collection loaded from file";
         } catch (IOException e) {
-            message = "Unable to read from file: " + JSON_FILE;
+            String message = "Unable to read from file: " + JSON_FILE;
+            JOptionPane dialog = new JOptionPane();
+            dialog.showMessageDialog(buttonArea, message);
         }
-        JOptionPane dialog = new JOptionPane();
-        dialog.showMessageDialog(buttonArea, message);
+
     }
 
     // Code modified from CPSC210/JsonSerializationDemo
@@ -137,20 +141,29 @@ public class BGApp extends JFrame {
         dialog.showMessageDialog(buttonArea, message);
     }
 
-    // EFFECTS: display list of game details for entire collection
-    public void showDetailedGamesList() {
-        String message = "";
-        if (collection.isEmpty()) {
-            message += "Collection is empty!";
-        } else {
-            for (BoardGame game : collection.getBoardGames()) {
-                message += displayGameDetails(game);
-            }
-        }
+    // MODIFIES: this
+    // EFFECTS: removes game at specified index in collection
+    public void removeGame(int index) {
+        BoardGame game = collection.getBoardGames().get(index);
+        collection.removeBoardGame(game);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: adds tag to game at specified index in collection
+    public void addCategoryTag(int index, String tag) {
+        BoardGame game = collection.getBoardGames().get(index);
+        game.addCategory(tag);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: displays game details for a game at specified index in collection
+    public void showGameDetails(int index) {
+        BoardGame game = collection.getBoardGames().get(index);
+        String message = displayGameDetails(game);
         displayArea.setText(message);
     }
 
-    // EFFECTS: displays detailed information about a specified game
+    // EFFECTS: returns string of information about a specified game
     private String displayGameDetails(BoardGame game) {
         String gameDetails = "\n";
         gameDetails += "Name: " + game.getName() + "\n";
@@ -164,33 +177,53 @@ public class BGApp extends JFrame {
         return gameDetails;
     }
 
-    public void addNewGame() {
-        String name = formArea.getNameField().getText();
-        Integer minPlayers = Integer.valueOf(formArea.getMinPlayerField().getText());
-        Integer maxPlayers = Integer.valueOf(formArea.getMaxPlayerField().getText());
-        Integer minLength = Integer.valueOf(formArea.getMinLengthField().getText());
-        Integer maxLength = Integer.valueOf(formArea.getMaxLengthField().getText());
-        BoardGame game = new BoardGame(name, minPlayers, maxPlayers, minLength, maxLength);
-        collection.addBoardGame(game);
+    // EFFECTS: produces list of all game names
+    public ArrayList<String> getGameNames() {
+        ArrayList<String> gameNames = new ArrayList<>();
+        for (BoardGame game: collection.getBoardGames()) {
+            gameNames.add(game.getName());
+        }
+        return gameNames;
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds new game created from form field to collection and
+    // notifies user if empty string or non-integers have been entered in players and length fields
+    public void addNewGame() {
+        try {
+            BoardGame game = formArea.createNewGame();
+            collection.addBoardGame(game);
+        } catch (NumberFormatException e) {
+            String message = "Please only enter numbers in 'players' and 'length' fields";
+            JOptionPane dialog = new JOptionPane();
+            dialog.showMessageDialog(buttonArea, message);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: does specified action based on the function of the button
     public void handleAction(Button button) {
         String type = button.getText();
         switch (type) {
             case "Add":
                 addNewGame();
-                showDetailedGamesList();
+                listPanel.updateList();
                 break;
             case "Load":
                 loadCollection();
-                showDetailedGamesList();
+                listPanel.updateList();
                 break;
             case "Save":
                 saveCollection();
         }
     }
 
+    // EFFECTS: creates and runs new BGApp
     public static void main(String[] args) {
-        new BGApp();
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new BGApp();
+            }
+        });
     }
 }

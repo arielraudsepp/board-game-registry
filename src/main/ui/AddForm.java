@@ -1,11 +1,11 @@
 package ui;
 
+import model.BoardGame;
+
 import javax.swing.*;
 
 public class AddForm extends JPanel {
-
     private JPanel panel;
-    private BGApp app;
 
     private FormField nameField;
     private FormField minPlayersField;
@@ -14,8 +14,9 @@ public class AddForm extends JPanel {
     private FormField maxLengthField;
 
 
-
-    public AddForm(BGApp app, JComponent parent) {
+    // MODIFIES: this, parent
+    // EFFECTS: creates add game form and adds in to parent
+    public AddForm(JComponent parent) {
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         nameField = new FormField(panel,"Board Game Name: ");
@@ -33,23 +34,13 @@ public class AddForm extends JPanel {
         parent.add(panel);
     }
 
-    public JTextField getNameField() {
-        return nameField.getField();
-    }
-
-    public JTextField getMinPlayerField() {
-        return minPlayersField.getField();
-    }
-
-    public JTextField getMaxPlayerField() {
-        return maxPlayersField.getField();
-    }
-
-    public JTextField getMinLengthField() {
-        return minLengthField.getField();
-    }
-
-    public JTextField getMaxLengthField() {
-        return maxLengthField.getField();
+    // EFFECTS: creates new game from form fields
+    public BoardGame createNewGame() throws NumberFormatException {
+        String name = nameField.getField().getText();
+        Integer minPlayers = Integer.valueOf(minPlayersField.getField().getText());
+        Integer maxPlayers = Integer.valueOf(maxPlayersField.getField().getText());
+        Integer minLength = Integer.valueOf(minLengthField.getField().getText());
+        Integer maxLength = Integer.valueOf(maxLengthField.getField().getText());
+        return new BoardGame(name, minPlayers, maxPlayers, minLength, maxLength);
     }
 }

@@ -1,38 +1,47 @@
 {"games": [
     {
         "players": [
-            12,
-            12
+            3,
+            6
         ],
-        "name": "12",
+        "name": "Cutthroat Caverns",
         "length": [
-            12,
-            12
+            90,
+            90
         ],
-        "categories": ["fun"]
+        "categories": [
+            "adventure",
+            "fantasy"
+        ]
     },
     {
         "players": [
-            32,
-            32
+            3,
+            5
         ],
-        "name": "32",
+        "name": "Cosmic Encounter",
         "length": [
-            32,
-            32
+            60,
+            120
         ],
-        "categories": []
+        "categories": [
+            "bluffing",
+            "negotiation"
+        ]
     },
     {
         "players": [
-            1,
-            1
+            2,
+            4
         ],
-        "name": "1",
+        "name": "Forbidden Stars",
         "length": [
-            1,
-            1
+            120,
+            180
         ],
-        "categories": []
+        "categories": [
+            "bluffing",
+            "fighting"
+        ]
     }
 ]}

@@ -1,7 +1,6 @@
 package ui;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,12 +12,12 @@ public class Button implements ActionListener {
     public Button(BGApp app, JComponent parent, String name) {
         this.app = app;
         button = new JButton(name);
-        button.setFont(new Font("Arial", Font.PLAIN, 18));
         addToParent(parent);
         button.setActionCommand("click");
         button.addActionListener(this);
     }
 
+    // EFFECTS: calls app to handle button action if button is clicked
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("click")) {
