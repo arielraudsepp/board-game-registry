@@ -16,24 +16,18 @@ public class BGApp extends JFrame {
     private Collection collection;
     private JsonReader jsonReader;
     private JsonWriter jsonWriter;
-    private ArrayList<Button> buttons;
-    private JSplitPane mainPanel;
-    private JSplitPane leftPanel;
-    private JSplitPane rightPanel;
+    private JPanel mainPanel;
     private AddForm formArea;
     private JPanel buttonArea;
     private GameList listPanel;
+    private FilterList filterPanel;
     private JTextArea displayArea;
 
     public BGApp() {
         collection = new Collection();
         jsonReader = new JsonReader(JSON_FILE);
         jsonWriter = new JsonWriter(JSON_FILE);
-        buttons = new ArrayList<>();
-
-        mainPanel = new JSplitPane();
-        leftPanel = new JSplitPane();
-        rightPanel = new JSplitPane();
+        mainPanel = new JPanel();
 
         this.setTitle("Board Game Collection App");
         this.setVisible(true);
@@ -47,23 +41,15 @@ public class BGApp extends JFrame {
     }
 
     // MODIFIES: this
-    // EFFECTS: configures main, left and right panels and adds components
+    // EFFECTS: configures main panel and adds components
     private void initPanels() {
-        mainPanel.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
 
-        mainPanel.setLeftComponent(leftPanel);
-        mainPanel.setRightComponent(rightPanel);
-        mainPanel.setDividerLocation(300);
-
-        leftPanel.setOrientation(JSplitPane.VERTICAL_SPLIT);
-        leftPanel.setDividerLocation(400);
-        leftPanel.setTopComponent(createFormArea());
-        leftPanel.setBottomComponent(createButtons());
-
-        rightPanel.setOrientation(JSplitPane.VERTICAL_SPLIT);
-        rightPanel.setDividerLocation(300);
-        rightPanel.setTopComponent(createListArea());
-        rightPanel.setBottomComponent(createTextArea());
+        mainPanel.add(createButtons());
+        mainPanel.add(createFormArea());
+        mainPanel.add(createFilterArea());
+        mainPanel.add(createListArea());
+        mainPanel.add(createTextArea());
     }
 
     // MODIFIES: this
@@ -75,6 +61,13 @@ public class BGApp extends JFrame {
         displayArea.setEditable(false);
         textPanel.add(displayArea);
         return textPanel;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: creates a new filter panel
+    private JPanel createFilterArea() {
+        filterPanel = new FilterList(this);
+        return filterPanel;
     }
 
     // MODIFIES: this
@@ -102,11 +95,8 @@ public class BGApp extends JFrame {
         buttonArea = new JPanel();
         buttonArea.setSize(new Dimension(0, 0));
 
-        Button loadButton = new Button(this, buttonArea, "Load");
-        buttons.add(loadButton);
-
-        Button saveButton = new Button(this, buttonArea, "Save");
-        buttons.add(saveButton);
+        new Button(this, buttonArea, "Load");
+        new Button(this, buttonArea, "Save");
 
         return buttonArea;
     }
@@ -186,6 +176,38 @@ public class BGApp extends JFrame {
         return gameNames;
     }
 
+    // REQUIRES: number of players is integer >= 1
+    // EFFECTS: displays all games matching user entered number of players
+    public ArrayList<String> searchByPlayers(Integer num) {
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<BoardGame> games = collection.getBoardGamesWithNumPlayers(num);
+        for (BoardGame game : games) {
+            names.add(game.getName());
+        }
+        return names;
+    }
+
+    // EFFECTS: returns names of games matching user entered length of game
+    public ArrayList<String> searchByLength(Integer num) {
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<BoardGame> games = collection.getBoardGamesWithLength(num);
+        for (BoardGame game: games) {
+            names.add(game.getName());
+        }
+        return names;
+    }
+
+
+    // EFFECTS: returns names of games matching user entered category tag
+    public ArrayList<String> searchByCategory(String category) {
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<BoardGame> games = collection.getBoardGamesWithCategory(category);
+        for (BoardGame game : games) {
+            names.add(game.getName());
+        }
+        return names;
+    }
+
     // MODIFIES: this
     // EFFECTS: adds new game created from form field to collection and
     // notifies user if empty string or non-integers have been entered in players and length fields
@@ -201,17 +223,23 @@ public class BGApp extends JFrame {
     }
 
     // MODIFIES: this
+    // EFFECTS: updates game list and filter list
+    public void updateLists() {
+        listPanel.updateList();
+    }
+
+    // MODIFIES: this
     // EFFECTS: does specified action based on the function of the button
     public void handleAction(Button button) {
         String type = button.getText();
         switch (type) {
             case "Add":
                 addNewGame();
-                listPanel.updateList();
+                updateLists();
                 break;
             case "Load":
                 loadCollection();
-                listPanel.updateList();
+                updateLists();
                 break;
             case "Save":
                 saveCollection();
@@ -226,4 +254,6 @@ public class BGApp extends JFrame {
             }
         });
     }
+
+
 }

@@ -63,7 +63,7 @@ public class GameList extends JPanel
                 list.ensureIndexIsVisible(index);
             }
             app.removeGame(index);
-            updateList();
+            app.updateLists();
         }
     }
 
@@ -78,17 +78,22 @@ public class GameList extends JPanel
             this.button = button;
         }
 
-        //Required by ActionListener.
         public void actionPerformed(ActionEvent e) {
             int index = list.getSelectedIndex();
 
-            String tag = categoryTag.getText();
-            app.addCategoryTag(index, tag);
-            app.showGameDetails(index);
+            if (index < 0) {
+                String message = "Please select a game from the list";
+                JOptionPane dialog = new JOptionPane();
+                dialog.showMessageDialog(categoryTag, message);
+            } else {
 
-            categoryTag.requestFocusInWindow();
-            categoryTag.setText("");
+                String tag = categoryTag.getText();
+                app.addCategoryTag(index, tag);
+                app.showGameDetails(index);
 
+                categoryTag.requestFocusInWindow();
+                categoryTag.setText("");
+            }
         }
 
         // MODIFIES: this
@@ -151,11 +156,11 @@ public class GameList extends JPanel
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new BoxLayout(buttonPane,
                 BoxLayout.LINE_AXIS));
+        buttonPane.add(categoryTag);
         buttonPane.add(addTagButton);
         buttonPane.add(Box.createHorizontalStrut(5));
         buttonPane.add(new JSeparator(SwingConstants.VERTICAL));
         buttonPane.add(Box.createHorizontalStrut(5));
-        buttonPane.add(categoryTag);
         buttonPane.add(deleteButton);
         buttonPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 

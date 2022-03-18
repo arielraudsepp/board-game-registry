@@ -38,7 +38,7 @@ public class Collection implements Writable {
 
     // REQUIRES: number is integer is >= 1
     // EFFECTS: produces list of board games with given number of players
-    public ArrayList<BoardGame> getBoardGamesWithNumPlayers(int number) {
+    public ArrayList<BoardGame> getBoardGamesWithNumPlayers(Integer number) {
         ArrayList<BoardGame> gamesWithNumPlayers = new ArrayList<>();
 
         for (BoardGame game : this.boardGames) {
@@ -51,7 +51,7 @@ public class Collection implements Writable {
 
     // REQUIRES: number is integer >= 1
     // EFFECTS: produces list of board games with given length (minutes)
-    public ArrayList<BoardGame> getBoardGamesWithLength(int number) {
+    public ArrayList<BoardGame> getBoardGamesWithLength(Integer number) {
         ArrayList<BoardGame> gamesWithLength = new ArrayList<>();
 
         for (BoardGame game : this.boardGames) {

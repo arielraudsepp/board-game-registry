@@ -42,5 +42,6 @@ public class AddForm extends JPanel {
         Integer minLength = Integer.valueOf(minLengthField.getField().getText());
         Integer maxLength = Integer.valueOf(maxLengthField.getField().getText());
         return new BoardGame(name, minPlayers, maxPlayers, minLength, maxLength);
+
     }
 }
