@@ -18,14 +18,12 @@ public class BGApp extends JFrame {
     private JsonWriter jsonWriter;
     private JTabbedPane mainPanel;
     private JPanel formPanel;
-    private AddForm formArea;
     private JPanel buttonPanel;
     private JPanel listPanel;
     private GameList listArea;
     private JPanel filterPanel;
-    private FilterList filterArea;
     private JPanel textPanel;
-    private JTextArea displayArea;
+
 
     public BGApp() {
         collection = new Collection();
@@ -33,8 +31,8 @@ public class BGApp extends JFrame {
         jsonWriter = new JsonWriter(JSON_FILE);
         mainPanel = new JTabbedPane();
 
-        createTextPanel();
-        createFormPanel();
+        createDisplayPanel();
+        createAddGamePanel();
         createFilterPanel();
         createListPanel();
         createButtonPanel();
@@ -57,17 +55,15 @@ public class BGApp extends JFrame {
     private void initPanels() {
         mainPanel.addTab("Load/Save", buttonPanel);
         mainPanel.addTab("Add Game", formPanel);
-        mainPanel.addTab("View/Search", filterPanel);
+        mainPanel.addTab("Filter", filterPanel);
         mainPanel.addTab("All Games", listPanel);
     }
 
     // MODIFIES: this
     // EFFECTS:  creates a text panel to display game details
-    private JPanel createTextPanel() {
+    private JPanel createDisplayPanel() {
         textPanel = new JPanel();
-        textPanel.add(new JLabel("Selected Game Details: "));
-        displayArea = new JTextArea(7, 20);
-        displayArea.setEditable(false);
+        DisplayPanel displayArea = new DisplayPanel(this);
         textPanel.add(displayArea);
         return textPanel;
     }
@@ -75,8 +71,8 @@ public class BGApp extends JFrame {
     // MODIFIES: this
     // EFFECTS: creates a new filter panel
     private JPanel createFilterPanel() {
-        filterPanel = new JPanel(new GridLayout(2,2));
-        filterArea = new FilterList(this);
+        filterPanel = new JPanel();
+        FilterPanel filterArea = new FilterPanel(this);
         filterPanel.add(filterArea);
         return filterPanel;
     }
@@ -87,17 +83,15 @@ public class BGApp extends JFrame {
         listPanel = new JPanel(new GridLayout(2, 1));
         listArea = new GameList(this);
         listPanel.add(listArea);
-        listPanel.add(textPanel);
         return listPanel;
     }
 
     // MODIFIES: this
-    // EFFECTS:  creates form panel with add game form and 'add' button
-    private JPanel createFormPanel() {
+    // EFFECTS:  creates add game panel
+    private JPanel createAddGamePanel() {
         formPanel = new JPanel();
-        formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
-        formArea = new AddForm(formPanel);
-        new Button(this, formPanel, "Add");
+        AddGamePanel form = new AddGamePanel(this, formPanel);
+        formPanel.add(form);
         return formPanel;
     }
 
@@ -149,42 +143,20 @@ public class BGApp extends JFrame {
     // MODIFIES: this
     // EFFECTS: removes game at specified index in collection
     public void removeGame(int index) {
-        BoardGame game = getGame(index);
+        BoardGame game = collection.getBoardGames().get(index);
         collection.removeBoardGame(game);
     }
 
     // MODIFIES: this
     // EFFECTS: adds tag to game at specified index in collection
     public void addCategoryTag(int index, String tag) {
-        BoardGame game = getGame(index);
+        BoardGame game = collection.getBoardGames().get(index);
         game.addCategory(tag);
     }
 
-    // MODIFIES: this
-    // EFFECTS: displays game details for a game at specified index in collection
-    public void showGameDetails(int index) {
-        BoardGame game = getGame(index);
-        String message = displayGameDetails(game);
-        displayArea.setText(message);
-    }
-
-    // EFFECTS: returns string of information about a specified game
-    private String displayGameDetails(BoardGame game) {
-        String gameDetails = "\n";
-        gameDetails += "Name: " + game.getName() + "\n";
-        gameDetails += "Number of Players: " + game.getPlayers()[0] + "-" + game.getPlayers()[1] + "\n";
-        gameDetails += "Length (minutes): " + game.getLength()[0] + "-" + game.getLength()[1] + "\n";
-        if (game.getCategories().isEmpty()) {
-            gameDetails += "Category Tags: None" + "\n";
-        } else {
-            gameDetails += "Category Tags: " + game.getCategories() + "\n";
-        }
-        return gameDetails;
-    }
-
     // EFFECTS: returns board game at specified index in collection
-    public BoardGame getGame(int index) {
-        return collection.getBoardGames().get(index);
+    public BoardGame getGame(String name) {
+        return collection.getBoardGameByName(name);
     }
 
     // EFFECTS: produces list of all game names
@@ -229,17 +201,9 @@ public class BGApp extends JFrame {
     }
 
     // MODIFIES: this
-    // EFFECTS: adds new game created from form field to collection and
-    // notifies user if empty string or non-integers have been entered in players and length fields
-    public void addNewGame() {
-        try {
-            BoardGame game = formArea.createNewGame();
-            collection.addBoardGame(game);
-        } catch (NumberFormatException e) {
-            String message = "Please only enter numbers in 'players' and 'length' fields";
-            JOptionPane dialog = new JOptionPane();
-            dialog.showMessageDialog(buttonPanel, message);
-        }
+    // EFFECTS: adds specified board game to collection
+    public void addGame(BoardGame game) {
+        collection.addBoardGame(game);
     }
 
     // MODIFIES: this
@@ -248,15 +212,16 @@ public class BGApp extends JFrame {
         listArea.updateList();
     }
 
+    // EFFECTS: returns true if game with name exists in collection
+    public boolean gameAlreadyAdded(String name) {
+        return collection.getBoardGameByName(name) != null;
+    }
+
     // MODIFIES: this
     // EFFECTS: does specified action based on the function of the button
     public void handleAction(Button button) {
         String type = button.getText();
         switch (type) {
-            case "Add":
-                addNewGame();
-                updateLists();
-                break;
             case "Load":
                 loadCollection();
                 updateLists();

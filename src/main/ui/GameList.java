@@ -19,6 +19,7 @@ public class GameList extends JPanel
     private JList list;
     private DefaultListModel listModel;
     private BGApp app;
+    private DisplayPanel display;
 
     private static final String tagString = "Add Tag";
     private static final String fireString = "Delete";
@@ -29,8 +30,10 @@ public class GameList extends JPanel
     public GameList(BGApp app) {
         super(new BorderLayout());
         this.app = app;
+        display = new DisplayPanel(app);
+
+
         listModel = new DefaultListModel();
-        add(new JLabel("Games in Collection"), BorderLayout.NORTH);
         updateList();
 
         createList();
@@ -38,8 +41,9 @@ public class GameList extends JPanel
 
         JPanel buttonPane = createButtonPane();
 
-        add(listScrollPane, BorderLayout.CENTER);
-        add(buttonPane, BorderLayout.PAGE_END);
+        add(listScrollPane, BorderLayout.PAGE_START);
+        add(buttonPane, BorderLayout.CENTER);
+        add(display, BorderLayout.PAGE_END);
     }
 
     class DeleteListener implements ActionListener {
@@ -86,10 +90,11 @@ public class GameList extends JPanel
                 JOptionPane dialog = new JOptionPane();
                 dialog.showMessageDialog(categoryTag, message);
             } else {
+                String name = listModel.elementAt(index).toString();
 
                 String tag = categoryTag.getText();
                 app.addCategoryTag(index, tag);
-                app.showGameDetails(index);
+                display.showGameDetails(name);
 
                 categoryTag.requestFocusInWindow();
                 categoryTag.setText("");
@@ -200,7 +205,8 @@ public class GameList extends JPanel
             } else {
                 deleteButton.setEnabled(true);
                 int index = list.getSelectedIndex();
-                app.showGameDetails(index);
+                String name = listModel.elementAt(index).toString();
+                display.showGameDetails(name);
             }
         }
     }
