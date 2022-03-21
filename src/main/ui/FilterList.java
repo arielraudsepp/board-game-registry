@@ -19,6 +19,7 @@ public class FilterList extends JPanel
     private JList list;
     private DefaultListModel listModel;
     private BGApp app;
+
     private JRadioButton lengthButton;
     private JRadioButton playersButton;
     private JRadioButton categoryButton;
@@ -97,8 +98,8 @@ public class FilterList extends JPanel
     }
 
     // MODIFIES: this
-    // EFFECTS: removes all elements from list and repopulates the list with all
-    // board game names from collection
+    // EFFECTS: removes all elements from list and repopulates the list
+    // with specified board game names
     public void updateList(ArrayList<String> gameNames) {
         listModel.clear();
         for (String name : gameNames) {

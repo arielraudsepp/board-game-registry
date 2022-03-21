@@ -16,26 +16,38 @@ public class BGApp extends JFrame {
     private Collection collection;
     private JsonReader jsonReader;
     private JsonWriter jsonWriter;
-    private JPanel mainPanel;
+    private JTabbedPane mainPanel;
+    private JPanel formPanel;
     private AddForm formArea;
-    private JPanel buttonArea;
-    private GameList listPanel;
-    private FilterList filterPanel;
+    private JPanel buttonPanel;
+    private JPanel listPanel;
+    private GameList listArea;
+    private JPanel filterPanel;
+    private FilterList filterArea;
+    private JPanel textPanel;
     private JTextArea displayArea;
 
     public BGApp() {
         collection = new Collection();
         jsonReader = new JsonReader(JSON_FILE);
         jsonWriter = new JsonWriter(JSON_FILE);
-        mainPanel = new JPanel();
+        mainPanel = new JTabbedPane();
+
+        createTextPanel();
+        createFormPanel();
+        createFilterPanel();
+        createListPanel();
+        createButtonPanel();
 
         this.setTitle("Board Game Collection App");
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setMinimumSize(new Dimension(800, 550));
+        setMinimumSize(new Dimension(500, 550));
         getContentPane().setLayout(new GridLayout());
         getContentPane().add(mainPanel);
         initPanels();
+
+
         pack();
 
     }
@@ -43,19 +55,16 @@ public class BGApp extends JFrame {
     // MODIFIES: this
     // EFFECTS: configures main panel and adds components
     private void initPanels() {
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
-
-        mainPanel.add(createButtons());
-        mainPanel.add(createFormArea());
-        mainPanel.add(createFilterArea());
-        mainPanel.add(createListArea());
-        mainPanel.add(createTextArea());
+        mainPanel.addTab("Load/Save", buttonPanel);
+        mainPanel.addTab("Add Game", formPanel);
+        mainPanel.addTab("View/Search", filterPanel);
+        mainPanel.addTab("All Games", listPanel);
     }
 
     // MODIFIES: this
     // EFFECTS:  creates a text panel to display game details
-    private JPanel createTextArea() {
-        JPanel textPanel = new JPanel();
+    private JPanel createTextPanel() {
+        textPanel = new JPanel();
         textPanel.add(new JLabel("Selected Game Details: "));
         displayArea = new JTextArea(7, 20);
         displayArea.setEditable(false);
@@ -65,40 +74,47 @@ public class BGApp extends JFrame {
 
     // MODIFIES: this
     // EFFECTS: creates a new filter panel
-    private JPanel createFilterArea() {
-        filterPanel = new FilterList(this);
+    private JPanel createFilterPanel() {
+        filterPanel = new JPanel(new GridLayout(2,2));
+        filterArea = new FilterList(this);
+        filterPanel.add(filterArea);
         return filterPanel;
     }
 
     // MODIFIES: this
     // EFFECTS: creates a new games list panel
-    private JPanel createListArea() {
-        listPanel = new GameList(this);
+    private JPanel createListPanel() {
+        listPanel = new JPanel(new GridLayout(2, 1));
+        listArea = new GameList(this);
+        listPanel.add(listArea);
+        listPanel.add(textPanel);
         return listPanel;
     }
 
     // MODIFIES: this
     // EFFECTS:  creates form panel with add game form and 'add' button
-    private JPanel createFormArea() {
-        JPanel formPanel = new JPanel();
+    private JPanel createFormPanel() {
+        formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
         formArea = new AddForm(formPanel);
-
         new Button(this, formPanel, "Add");
         return formPanel;
     }
 
 
     // MODIFIES: this
-    // EFFECTS:  a helper method which creates panel of 'load' and 'save' buttons
-    private JPanel createButtons() {
-        buttonArea = new JPanel();
-        buttonArea.setSize(new Dimension(0, 0));
+    // EFFECTS: creates panel of 'load' and 'save' buttons
+    private JPanel createButtonPanel() {
+        buttonPanel = new JPanel(new BorderLayout());
+        JPanel image = new ImagePanel();
+        image.setSize(new Dimension(200, 200));
+        buttonPanel.add(image, BorderLayout.CENTER);
 
+        JPanel buttonArea = new JPanel();
         new Button(this, buttonArea, "Load");
         new Button(this, buttonArea, "Save");
-
-        return buttonArea;
+        buttonPanel.add(buttonArea, BorderLayout.PAGE_END);
+        return buttonPanel;
     }
 
     // Code modified from CPSC210/JsonSerializationDemo
@@ -110,9 +126,8 @@ public class BGApp extends JFrame {
         } catch (IOException e) {
             String message = "Unable to read from file: " + JSON_FILE;
             JOptionPane dialog = new JOptionPane();
-            dialog.showMessageDialog(buttonArea, message);
+            dialog.showMessageDialog(buttonPanel, message);
         }
-
     }
 
     // Code modified from CPSC210/JsonSerializationDemo
@@ -128,27 +143,27 @@ public class BGApp extends JFrame {
             message = "Unable to write to file: " + JSON_FILE;
         }
         JOptionPane dialog = new JOptionPane();
-        dialog.showMessageDialog(buttonArea, message);
+        dialog.showMessageDialog(buttonPanel, message);
     }
 
     // MODIFIES: this
     // EFFECTS: removes game at specified index in collection
     public void removeGame(int index) {
-        BoardGame game = collection.getBoardGames().get(index);
+        BoardGame game = getGame(index);
         collection.removeBoardGame(game);
     }
 
     // MODIFIES: this
     // EFFECTS: adds tag to game at specified index in collection
     public void addCategoryTag(int index, String tag) {
-        BoardGame game = collection.getBoardGames().get(index);
+        BoardGame game = getGame(index);
         game.addCategory(tag);
     }
 
     // MODIFIES: this
     // EFFECTS: displays game details for a game at specified index in collection
     public void showGameDetails(int index) {
-        BoardGame game = collection.getBoardGames().get(index);
+        BoardGame game = getGame(index);
         String message = displayGameDetails(game);
         displayArea.setText(message);
     }
@@ -165,6 +180,11 @@ public class BGApp extends JFrame {
             gameDetails += "Category Tags: " + game.getCategories() + "\n";
         }
         return gameDetails;
+    }
+
+    // EFFECTS: returns board game at specified index in collection
+    public BoardGame getGame(int index) {
+        return collection.getBoardGames().get(index);
     }
 
     // EFFECTS: produces list of all game names
@@ -218,14 +238,14 @@ public class BGApp extends JFrame {
         } catch (NumberFormatException e) {
             String message = "Please only enter numbers in 'players' and 'length' fields";
             JOptionPane dialog = new JOptionPane();
-            dialog.showMessageDialog(buttonArea, message);
+            dialog.showMessageDialog(buttonPanel, message);
         }
     }
 
     // MODIFIES: this
     // EFFECTS: updates game list and filter list
     public void updateLists() {
-        listPanel.updateList();
+        listArea.updateList();
     }
 
     // MODIFIES: this
