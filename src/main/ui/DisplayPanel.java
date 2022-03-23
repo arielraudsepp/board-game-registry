@@ -19,10 +19,8 @@ public class DisplayPanel  extends JPanel {
         this.add(textArea, BorderLayout.PAGE_END);
     }
 
-    public JTextArea getTextArea() {
-        return textArea;
-    }
-
+    // MODIFIES: this
+    // EFFECTS: sets text into text area
     public void setTextArea(String text) {
         textArea.setText(text);
     }
@@ -35,7 +33,7 @@ public class DisplayPanel  extends JPanel {
         setTextArea(message);
     }
 
-    // EFFECTS: returns string of information about a specified game
+    // EFFECTS: returns information about a specified game
     private String displayGameDetails(BoardGame game) {
         String gameDetails = "\n";
         gameDetails += "Name: " + game.getName() + "\n";

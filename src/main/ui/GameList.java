@@ -46,6 +46,7 @@ public class GameList extends JPanel
         add(display, BorderLayout.PAGE_END);
     }
 
+
     class DeleteListener implements ActionListener {
         // MODIFIES: this, app
         // EFFECTS: listener for delete button; disables delete button if list is empty,

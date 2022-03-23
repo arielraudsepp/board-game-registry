@@ -14,6 +14,8 @@ public class ImagePanel extends JPanel {
         image = Toolkit.getDefaultToolkit().createImage("./data/gameNight.gif");
     }
 
+    // MODIFIED: this
+    // EFFECTS: draws image in panel
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);

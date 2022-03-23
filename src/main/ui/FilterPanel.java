@@ -44,6 +44,8 @@ public class FilterPanel extends JPanel
 
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates the filter button
     private void createFilterButton() {
         filterButton = new JButton("Filter");
         FilterListener filterListener = new FilterListener(filterButton);
@@ -52,7 +54,7 @@ public class FilterPanel extends JPanel
     }
 
     // MODIFIES: this
-    // EFFECTS: creates the list
+    // EFFECTS: creates the filter list
     private void createList() {
         list = new JList(listModel);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -61,6 +63,7 @@ public class FilterPanel extends JPanel
         list.setVisibleRowCount(10);
     }
 
+    // MODIFIES: this
     // EFFECTS: creates radio button and fields for filter criteria
     private JPanel createFilterFields() {
         JPanel filterFields = new JPanel();
@@ -108,8 +111,7 @@ public class FilterPanel extends JPanel
 
 
     // MODIFIES: this, app
-    // EFFECTS: listener for 'add tag' button and tag field; enables 'add tag' button
-    // if there is text in field,
+    // EFFECTS: listener for 'filter' button, calls action based on which radio button is selected
     class FilterListener implements ActionListener {
         private JButton button;
 
@@ -143,10 +145,7 @@ public class FilterPanel extends JPanel
     // MODIFIES: if selection of element in list is complete,
     // calls app to show game details in display area
     public void valueChanged(ListSelectionEvent e) {
-
-
         if (!e.getValueIsAdjusting()) {
-
             if (list.getSelectedIndex() != -1) {
                 int index = list.getSelectedIndex();
                 String name = listModel.elementAt(index).toString();
