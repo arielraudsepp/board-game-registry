@@ -2,14 +2,19 @@ package ui;
 
 import model.BoardGame;
 import model.Collection;
+import model.Event;
+import model.EventLog;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class BGApp extends JFrame {
     private static final String JSON_FILE = "./data/collection.json";
@@ -31,23 +36,36 @@ public class BGApp extends JFrame {
         jsonWriter = new JsonWriter(JSON_FILE);
         mainPanel = new JTabbedPane();
 
+        initFrame();
         createDisplayPanel();
         createAddGamePanel();
         createFilterPanel();
         createListPanel();
         createButtonPanel();
 
-        this.setTitle("Board Game Collection App");
-        this.setVisible(true);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
         setMinimumSize(new Dimension(500, 550));
         getContentPane().setLayout(new GridLayout());
         getContentPane().add(mainPanel);
         initPanels();
-
-
         pack();
 
+    }
+
+    // MODIFIES: this
+    // EFFECTS: initializes frame
+    public void initFrame() {
+        this.setTitle("Board Game Collection App");
+        this.setVisible(true);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                for (Iterator<Event> it = EventLog.getInstance().iterator(); it.hasNext(); ) {
+                    Event e = it.next();
+                    System.out.println(e);
+                }
+            }
+        });
     }
 
     // MODIFIES: this

@@ -43,5 +43,17 @@
             "bluffing",
             "fighting"
         ]
+    },
+    {
+        "players": [
+            2,
+            2
+        ],
+        "name": "2",
+        "length": [
+            2,
+            2
+        ],
+        "categories": []
     }
 ]}

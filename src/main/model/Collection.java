@@ -16,12 +16,14 @@ public class Collection implements Writable {
     // EFFECTS: adds a board game to the collection
     public void addBoardGame(BoardGame game) {
         this.boardGames.add(game);
+        EventLog.getInstance().logEvent(new Event("Added game to collection"));
     }
 
     // MODIFIES: this
     // EFFECTS: removes a board game to the collection
     public void removeBoardGame(BoardGame game) {
         this.boardGames.remove(game);
+        EventLog.getInstance().logEvent(new Event("Removed game from collection"));
     }
 
     // EFFECTS: produces list of board games with given category tag

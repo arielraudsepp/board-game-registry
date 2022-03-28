@@ -13,3 +13,24 @@ As a user, I want to:
 - view all board games in my collection
 - be able to save my collection to a file
 - be able to load my collection from a file 
+
+## Phase 4: Task 2
+Mon Mar 28 16:38:40 PDT 2022
+
+Added game to collection
+
+Mon Mar 28 16:38:40 PDT 2022
+
+Added game to collection
+
+Mon Mar 28 16:38:40 PDT 2022
+
+Added game to collection
+
+Mon Mar 28 16:38:40 PDT 2022
+
+Added game to collection
+
+Mon Mar 28 16:38:44 PDT 2022
+
+Removed game from collection
