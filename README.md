@@ -34,3 +34,10 @@ Added game to collection
 Mon Mar 28 16:38:44 PDT 2022
 
 Removed game from collection
+
+## Phase 4: Task 3
+The UML design class diagram shows high cohesion. If I had more time, I would:
+- remove the bidirectional associations between the main class and the other panel classes
+- create an abstract class that implements the display panel
+- use the Buttons class directly in the ImagePanel class
+- use the Observer pattern to update the Display Panel to reduce cohesion
